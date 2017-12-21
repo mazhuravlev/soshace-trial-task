@@ -1,0 +1,19 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Jogging app</span>
+    <span class="example-spacer"></span>
+    <form *ngIf="!isLoggedIn" [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit(loginForm)">
+    <mat-form-field floatLabel="never" [hideRequiredMarker]="true" style="margin-right: 12px;">
+      <input formControlName="username" matInput placeholder="Email">
+    </mat-form-field>
+    <mat-form-field floatLabel="never" [hideRequiredMarker]="true">
+      <input formControlName="password" matInput placeholder="Password">
+    </mat-form-field>
+    <button mat-raised-button color="primary" [disabled]="!loginForm.valid">Log In</button>
+    </form>
+    <button mat-button *ngIf="isLoggedIn" routerLink="/logout">Logout</button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div>
+  <router-outlet></router-outlet>
+</div>

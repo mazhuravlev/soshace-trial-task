@@ -1,0 +1,21 @@
+<mat-card class="form-card">
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+    <mat-form-field>
+      <input formControlName="name" matInput placeholder="First name">
+    </mat-form-field>
+    <mat-form-field>
+      <input formControlName="surname" matInput placeholder="Surname">
+    </mat-form-field>
+    <mat-form-field>
+      <input formControlName="username" matInput placeholder="Email" required>
+    </mat-form-field>
+    <mat-form-field>
+      <input formControlName="password" type="password" matInput placeholder="Password" required>
+    </mat-form-field>
+    <mat-form-field>
+      <input formControlName="passwordConfirm" type="password" matInput placeholder="Repeat password" required>
+    </mat-form-field>
+    <button style="margin: 0 auto;" color="primary" mat-raised-button [disabled]="!formValid()">Create an account
+    </button>
+  </form>
+</mat-card>

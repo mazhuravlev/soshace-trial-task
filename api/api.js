@@ -15,8 +15,10 @@ nconf.argv().env().file('config.json');
 nconf.defaults({
     port: 3100,
     secret: 'secret',
-    dbUrl: 'mongodb://localhost:27017/testapp'
+    dbUrl: 'mongodb://localhost:27017/testapp',
+    routePrefix: '/api'
 });
+const routePrefix = nconf.get('routePrefix');
 
 passport.use(new LocalStrategy(async (username, password, done) => {
     const user = await User.findOne({username: username});
@@ -51,30 +53,34 @@ app.use(bodyparser());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(route.post('/register', async (ctx, next) => {
+function success(message) {
+    return {message: message || 'OK'};
+}
+
+app.use(route.post(routePrefix + '/register', async (ctx, next) => {
     const userDto = ctx.request.body;
     const user = await User.findOne({username: userDto.username});
     if (user) {
         ctx.throw(400, 'Username is busy');
     }
-    const newUser = new User(only(userDto, 'username password'));
+    const newUser = new User(only(userDto, 'username password name surname'));
     try {
         await newUser.save();
     } catch (e) {
         ctx.throw(500, 'Failed to save user');
     }
     ctx.status = 201;
-    ctx.body = 'OK';
+    ctx.body = success();
 }));
 
-app.use(route.post('/login', async (ctx, next) => {
+app.use(route.post(routePrefix + '/login', async (ctx, next) => {
     await passport.authenticate('local', async (err, user) => {
         if (err) {
             ctx.throw(401, err);
-        }
-        if (user) {
+        } else if (user) {
             await ctx.login(user);
-            ctx.body = 'OK';
+            ctx.body = success();
+            ctx.status = 200;
         } else {
             ctx.throw(500, 'Login error');
         }
@@ -86,27 +92,29 @@ app.use(async (ctx, next) => {
     await next();
 });
 
-app.use(route.get('/logout', async (ctx, next) => {
-    await next();
+app.use(route.get(routePrefix + '/logout', async (ctx, next) => {
+    ctx.logout();
+    ctx.status = 200;
+    ctx.body = success();
 }));
 
-app.use(route.get('/records', async (ctx, next) => {
+app.use(route.get(routePrefix + '/records', async (ctx, next) => {
     ctx.body = await Record.find({userId: ctx.state.user._id});
 }));
 
-app.use(route.post('/records', async (ctx, next) => {
+app.use(route.post(routePrefix + '/records', async (ctx, next) => {
     const newRecord = new Record(only(ctx.request.body, 'date distance duration'));
     newRecord.userId = ctx.state.user._id;
     try {
         await newRecord.save();
         ctx.status = 201;
-        ctx.body = 'OK';
+        ctx.body = success();
     } catch (e) {
         ctx.throw(400, e);
     }
 }));
 
-app.use(route.put('/records', async (ctx, next) => {
+app.use(route.put(routePrefix + '/records', async (ctx, next) => {
     const modelDto = ctx.request.body;
     let record;
     try {
@@ -122,19 +130,19 @@ app.use(route.put('/records', async (ctx, next) => {
     record.duration = modelDto.duration;
     try {
         await record.save();
-        ctx.body = 'OK';
+        ctx.body = null;
     } catch (e) {
         ctx.throw(400, e);
     }
 }));
 
-app.use(route.delete('/records', async (ctx, next) => {
+app.use(route.delete(routePrefix + '/records', async (ctx, next) => {
     const record = await Record.findOne({_id: ctx.request.body._id});
     if (!record) ctx.throw(404, 'Record not found');
     if (!record.userId.equals(ctx.state.user._id)) ctx.throw(401);
     try {
         await record.remove();
-        ctx.body = 'OK';
+        ctx.body = null;
     } catch (e) {
         ctx.throw(400, e);
     }
