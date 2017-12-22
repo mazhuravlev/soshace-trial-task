@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <span>Jogging app</span>
+    <span routerLink="/">Jogging app</span>
     <span class="example-spacer"></span>
     <form *ngIf="!isLoggedIn" [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit(loginForm)">
     <mat-form-field floatLabel="never" [hideRequiredMarker]="true" style="margin-right: 12px;">

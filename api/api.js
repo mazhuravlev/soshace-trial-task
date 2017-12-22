@@ -53,7 +53,7 @@ app.use(bodyparser());
 app.use(passport.initialize());
 app.use(passport.session());
 
-function success(message) {
+function successResponse(message) {
     return {message: message || 'OK'};
 }
 
@@ -69,8 +69,8 @@ app.use(route.post(routePrefix + '/register', async (ctx, next) => {
     } catch (e) {
         ctx.throw(500, 'Failed to save user');
     }
-    ctx.status = 201;
-    ctx.body = success();
+    ctx.status = 204;
+    ctx.body = successResponse();
 }));
 
 app.use(route.post(routePrefix + '/login', async (ctx, next) => {
@@ -79,7 +79,7 @@ app.use(route.post(routePrefix + '/login', async (ctx, next) => {
             ctx.throw(401, err);
         } else if (user) {
             await ctx.login(user);
-            ctx.body = success();
+            ctx.body = successResponse();
             ctx.status = 200;
         } else {
             ctx.throw(500, 'Login error');
@@ -92,39 +92,58 @@ app.use(async (ctx, next) => {
     await next();
 });
 
+// Authenticated routes:
+
+app.use(route.get(routePrefix + '/check', ctx => {
+    ctx.status = 200;
+    ctx.body = successResponse();
+}));
+
 app.use(route.get(routePrefix + '/logout', async (ctx, next) => {
     ctx.logout();
     ctx.status = 200;
-    ctx.body = success();
+    ctx.body = successResponse();
 }));
 
+// Get all records for user
 app.use(route.get(routePrefix + '/records', async (ctx, next) => {
     ctx.body = await Record.find({userId: ctx.state.user._id});
 }));
 
+// Get single record
+app.use(route.get(routePrefix + '/records/:id', async (ctx, id, next) => {
+    const record = await Record.findOne({_id: id});
+    if (!record) ctx.throw(404);
+    if (!record.userId.equals(ctx.state.user._id)) ctx.throw(403);
+    ctx.body = record;
+}));
+
+// Create record
 app.use(route.post(routePrefix + '/records', async (ctx, next) => {
     const newRecord = new Record(only(ctx.request.body, 'date distance duration'));
     newRecord.userId = ctx.state.user._id;
     try {
         await newRecord.save();
-        ctx.status = 201;
-        ctx.body = success();
+        ctx.status = 204;
+        ctx.body = successResponse();
     } catch (e) {
         ctx.throw(400, e);
     }
 }));
 
-app.use(route.put(routePrefix + '/records', async (ctx, next) => {
+// Update record
+app.use(route.put(routePrefix + '/records/:id', async (ctx, id, next) => {
     const modelDto = ctx.request.body;
+    if(modelDto._id !== id) ctx.throw(400, 'id mismatch');
     let record;
     try {
-        record = await Record.findOne({_id: modelDto._id});
+        record = await Record.findOne({_id: id});
     } catch (e) {
         ctx.throw(400, e);
         return;
     }
     if (!record) ctx.throw(404, 'Record not found');
-    if (!record.userId.equals(ctx.state.user._id)) ctx.throw(401);
+    if (!record.userId.equals(ctx.state.user._id)) ctx.throw(403);
     record.date = modelDto.date;
     record.distance = modelDto.distance;
     record.duration = modelDto.duration;
@@ -136,13 +155,16 @@ app.use(route.put(routePrefix + '/records', async (ctx, next) => {
     }
 }));
 
-app.use(route.delete(routePrefix + '/records', async (ctx, next) => {
-    const record = await Record.findOne({_id: ctx.request.body._id});
+
+// Delete record
+app.use(route.delete(routePrefix + '/records/:id', async (ctx, id, next) => {
+    const record = await Record.findOne({_id: id});
     if (!record) ctx.throw(404, 'Record not found');
-    if (!record.userId.equals(ctx.state.user._id)) ctx.throw(401);
+    if (!record.userId.equals(ctx.state.user._id)) ctx.throw(403);
     try {
         await record.remove();
-        ctx.body = null;
+        ctx.body = successResponse();
+        ctx.status = 204;
     } catch (e) {
         ctx.throw(400, e);
     }

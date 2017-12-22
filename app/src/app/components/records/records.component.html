@@ -1,0 +1,42 @@
+<!--suppress HtmlUnknownAttribute -->
+<div>
+  <button mat-mini-fab routerLink="/add-record"><i class="material-icons">add_box</i></button>
+  <div *ngIf="dataSource" class="example-container mat-elevation-z8">
+    <mat-table #table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="date">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Date</mat-header-cell>
+        <mat-cell *matCellDef="let record"> {{record.date | date}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="duration">
+        <mat-header-cell *matHeaderCellDef> Time</mat-header-cell>
+        <mat-cell *matCellDef="let record"> {{record.duration}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="distance">
+        <mat-header-cell *matHeaderCellDef> Distance (Metres)</mat-header-cell>
+        <mat-cell *matCellDef="let record"> {{record.distance}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="averageSpeed">
+        <mat-header-cell *matHeaderCellDef> Average speed (Km/hr)</mat-header-cell>
+        <mat-cell *matCellDef="let record"> {{getAverageSpeed(record)}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef> Edit</mat-header-cell>
+        <mat-cell *matCellDef="let record">
+          <button mat-button [routerLink]="['/edit-record', record._id]">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="delete">
+        <mat-header-cell *matHeaderCellDef>Delete</mat-header-cell>
+        <mat-cell *matCellDef="let record">
+          <button mat-button (click)="deleteRecord(record)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </div>
+</div>

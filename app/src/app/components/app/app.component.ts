@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ApiService} from "../../services/api.service";
 import {Subscription} from "rxjs/Subscription";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,9 @@ export class AppComponent implements OnInit, OnDestroy {
   public isLoggedIn: boolean;
   private loginSubscription: Subscription;
 
-  constructor(private formBuilder: FormBuilder, private apiService: ApiService) {
+  constructor(private formBuilder: FormBuilder,
+              private apiService: ApiService,
+              private router: Router) {
     this.loginForm = formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -22,7 +25,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loginSubscription = this.apiService.loginObservable.subscribe(x => this.isLoggedIn = x);
+    this.loginSubscription = this.apiService.isLoggedIn.subscribe(isLoggedIn => {
+      this.isLoggedIn = isLoggedIn;
+      if(isLoggedIn) this.router.navigateByUrl('/dashboard');
+    });
   }
 
   ngOnDestroy() {
