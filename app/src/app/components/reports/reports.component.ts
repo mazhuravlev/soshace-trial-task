@@ -4,6 +4,7 @@ import {RecordDto} from "../../dto/record.dto";
 import {MatTableDataSource} from "@angular/material";
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import {ConverterService} from "../../services/converter.service";
 
 @Component({
   selector: 'app-reports',
@@ -14,7 +15,7 @@ export class ReportsComponent implements OnInit {
   public displayedColumns = ['week', 'averageDistance', 'averageSpeed'];
   public dataSource = new MatTableDataSource();
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private converterService: ConverterService) {
   }
 
   ngOnInit() {
@@ -26,19 +27,12 @@ export class ReportsComponent implements OnInit {
   private makeReport(records: RecordDto[]): ReportRow[] {
     return Object.entries(_.groupBy(records, record => moment(record.date).week()))
       .map(row => this.makeReportRow(row))
-      .sort((a,b) => a.week - b.week);
+      .sort((a, b) => a.week - b.week);
   }
 
   private calcAverageSpeed(records: RecordDto[]): number {
-    return this.metersToKm(records.reduce((distanceAcc, r) => distanceAcc + r.distance, 0)) / this.secondsToHours(records.reduce((durationAcc, r) => durationAcc + r.duration, 0));
-  }
-
-  private secondsToHours(seconds: number) {
-    return seconds / 3600;
-  }
-
-  private metersToKm(meters: number): number {
-    return meters / 1000;
+    return this.converterService.metersToKm(records.reduce((distanceAcc, r) => distanceAcc + r.distance, 0))
+      / this.converterService.msToHours(records.reduce((durationAcc, r) => durationAcc + r.duration, 0));
   }
 
   private calcAverageDistance(records: RecordDto[]): number {

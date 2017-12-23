@@ -4,6 +4,7 @@ import {Observable} from "rxjs/Observable";
 import {RecordDto} from "../../dto/record.dto";
 import {MatSnackBar, MatTableDataSource} from "@angular/material";
 import * as moment from 'moment';
+import {ConverterService} from "../../services/converter.service";
 
 @Component({
   selector: 'app-records',
@@ -15,7 +16,9 @@ export class RecordsComponent implements OnInit {
   public displayedColumns = ['date', 'distance', 'duration', 'averageSpeed', 'edit', 'delete'];
   public dataSource = new MatTableDataSource();
 
-  constructor(private apiService: ApiService, private snackBar: MatSnackBar) {
+  constructor(private apiService: ApiService,
+              private snackBar: MatSnackBar,
+              private converterService: ConverterService) {
     apiService.getRecords().subscribe(records => this.setData(records));
   }
 
@@ -28,7 +31,8 @@ export class RecordsComponent implements OnInit {
   }
 
   public getAverageSpeed(record: RecordDto) {
-    return (record.distance / record.duration * 60).toFixed(2);
+    return (this.converterService.metersToKm(record.distance) / this.converterService.msToHours(record.duration))
+      .toFixed(2);
   }
 
   public deleteRecord(record: RecordDto) {

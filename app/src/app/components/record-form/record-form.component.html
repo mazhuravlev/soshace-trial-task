@@ -2,15 +2,15 @@
   <h3 class="title">{{record._id ? 'Edit record' : 'Add record'}}</h3>
   <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
     <mat-form-field>
-      <input matInput [matDatepicker]="picker" formControlName="date" placeholder="Choose a date">
+      <input matInput [matDatepicker]="picker" formControlName="date" placeholder="Choose a date" required autocomplete="off">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
     <mat-form-field>
-      <input formControlName="distance" type="number" matInput placeholder="Distance (meters)">
+      <input formControlName="distance" type="number" matInput placeholder="Distance (meters)" required autocomplete="off">
     </mat-form-field>
     <mat-form-field>
-      <input formControlName="duration" type="number" matInput placeholder="Time">
+      <input [textMask]="{mask: mask, guide: true, placeholderChar: placeholderChar}" formControlName="duration" matInput placeholder="Time" required autocomplete="off">
     </mat-form-field>
     <button color="primary" mat-raised-button [disabled]="!formValid()">Submit</button>
   </form>

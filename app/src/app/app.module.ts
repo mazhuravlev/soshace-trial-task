@@ -19,6 +19,7 @@ import { AddRecordComponent } from './components/add-record/add-record.component
 import { RecordFormComponent } from './components/record-form/record-form.component';
 import { DurationPipe } from './pipes/duration.pipe';
 import {ConverterService} from "./services/converter.service";
+import {TextMaskModule} from "angular2-text-mask";
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import {ConverterService} from "./services/converter.service";
     ReactiveFormsModule,
     MaterialModule,
     RoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    TextMaskModule
   ],
   providers: [ApiService, LoggedInGuard, ConverterService],
   bootstrap: [AppComponent]

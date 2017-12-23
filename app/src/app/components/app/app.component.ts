@@ -27,7 +27,6 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loginSubscription = this.apiService.isLoggedIn.subscribe(isLoggedIn => {
       this.isLoggedIn = isLoggedIn;
-      if(isLoggedIn) this.router.navigateByUrl('/dashboard');
     });
   }
 
