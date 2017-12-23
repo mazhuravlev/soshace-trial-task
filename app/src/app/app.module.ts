@@ -17,6 +17,8 @@ import {LoggedInGuard} from "./guards/logged-in.guard";
 import { EditRecordComponent } from './components/edit-record/edit-record.component';
 import { AddRecordComponent } from './components/add-record/add-record.component';
 import { RecordFormComponent } from './components/record-form/record-form.component';
+import { DurationPipe } from './pipes/duration.pipe';
+import {ConverterService} from "./services/converter.service";
 
 
 @NgModule({
@@ -30,7 +32,8 @@ import { RecordFormComponent } from './components/record-form/record-form.compon
     IndexComponent,
     EditRecordComponent,
     AddRecordComponent,
-    RecordFormComponent
+    RecordFormComponent,
+    DurationPipe
   ],
   imports: [
     BrowserModule,
@@ -40,7 +43,7 @@ import { RecordFormComponent } from './components/record-form/record-form.compon
     RoutingModule,
     HttpClientModule
   ],
-  providers: [ApiService, LoggedInGuard],
+  providers: [ApiService, LoggedInGuard, ConverterService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

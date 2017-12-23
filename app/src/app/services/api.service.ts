@@ -14,6 +14,10 @@ import "rxjs/add/observable/throw";
 import "rxjs/add/operator/catch";
 import {Router} from "@angular/router";
 import * as _ from 'lodash';
+import "rxjs/add/observable/concat";
+import "rxjs/add/operator/first";
+import {MatSnackBar} from "@angular/material";
+import {observable} from "rxjs/symbol/observable";
 
 @Injectable()
 export class ApiService {
@@ -23,33 +27,42 @@ export class ApiService {
   private isLoggedInSubject = new Subject<boolean>();
   private cachedRecords: RecordDto[] = [];
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar) {
     this.apiUrl = environment.apiUrl;
     this.checkLogin().subscribe(isLoggedIn => this.setIsLoggedIn(isLoggedIn));
   }
 
   private setIsLoggedIn(value: boolean) {
     this._isLoggedIn = value;
-    this.isLoggedInSubject.next(true);
+    this.isLoggedInSubject.next(value);
   }
 
   public get isLoggedIn(): Observable<boolean> {
-    return this._isLoggedIn ? Observable.of(this._isLoggedIn) : this.checkLogin();
+    return this._isLoggedIn ? this.isLoggedInSubject.asObservable().startWith(true)
+      : Observable.concat(this.checkLogin(), this.isLoggedInSubject.asObservable());
   }
 
   public checkLogin() {
-    return this.http.get(this.apiUrl + '/check').map(_ => true).catch(e => Observable.of(false)).do(x => console.log('login check', x));
+    return this.http.get(this.apiUrl + '/check').map(_ => true).catch(e => Observable.of(false)).first();
   }
 
   public login(user: UserDto): Observable<any> {
-    return this.http.post(this.apiUrl + '/login', user).do(isLoggedIn => {
-      this.setIsLoggedIn(true);
-    })
-      .catch(e => this.handleError(e));
+    return this.http.post(this.apiUrl + '/login', user)
+      .do(_ => this.setIsLoggedIn(true))
+      .catch(e => {
+        if (e.status === 400) {
+          this.snackBar.open(e.error, null, {
+            duration: 2000,
+          });
+          return Observable.never();
+        }
+        return Observable.throw(e);
+      });
   }
 
   public logout(): Observable<any> {
-    return this.http.get(this.apiUrl + '/logout').do(() => this.isLoggedInSubject.next(false))
+    return this.http.get(this.apiUrl + '/logout')
+      .do(() => this.setIsLoggedIn(false))
       .catch(e => this.handleError(e));
   }
 

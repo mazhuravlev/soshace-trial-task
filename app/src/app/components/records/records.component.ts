@@ -3,6 +3,7 @@ import {ApiService} from "../../services/api.service";
 import {Observable} from "rxjs/Observable";
 import {RecordDto} from "../../dto/record.dto";
 import {MatSnackBar, MatTableDataSource} from "@angular/material";
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-records',
@@ -14,7 +15,7 @@ export class RecordsComponent implements OnInit {
   public displayedColumns = ['date', 'distance', 'duration', 'averageSpeed', 'edit', 'delete'];
   public dataSource = new MatTableDataSource();
 
-  constructor(private apiService: ApiService, public snackBar: MatSnackBar) {
+  constructor(private apiService: ApiService, private snackBar: MatSnackBar) {
     apiService.getRecords().subscribe(records => this.setData(records));
   }
 

@@ -76,7 +76,7 @@ app.use(route.post(routePrefix + '/register', async (ctx, next) => {
 app.use(route.post(routePrefix + '/login', async (ctx, next) => {
     await passport.authenticate('local', async (err, user) => {
         if (err) {
-            ctx.throw(401, err);
+            ctx.throw(400, err);
         } else if (user) {
             await ctx.login(user);
             ctx.body = successResponse();

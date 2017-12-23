@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  MatButtonModule, MatCardModule, MatDatepickerModule, MatFormFieldModule, MatIconModule, MatInputModule,
+  MatButtonModule, MatCardModule, MatDatepickerModule, MatFormFieldModule, MatGridListModule, MatIconModule,
+  MatInputModule,
   MatNativeDateModule, MatSnackBarModule, MatSortModule,
   MatTableModule,
   MatToolbarModule
@@ -20,7 +21,8 @@ import {
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatGridListModule
   ],
   exports: [
     MatToolbarModule,
@@ -33,7 +35,8 @@ import {
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatGridListModule
   ],
   declarations: []
 })
