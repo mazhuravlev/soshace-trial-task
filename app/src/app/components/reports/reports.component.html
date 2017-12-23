@@ -4,7 +4,7 @@
     <mat-table #table [dataSource]="dataSource">
       <ng-container matColumnDef="week">
         <mat-header-cell *matHeaderCellDef> Week</mat-header-cell>
-        <mat-cell *matCellDef="let reportRow"> {{reportRow.week}}</mat-cell>
+        <mat-cell *matCellDef="let reportRow"> {{reportRow.week}} <small>({{reportRow.year}})</small></mat-cell>
       </ng-container>
       <ng-container matColumnDef="averageDistance">
         <mat-header-cell *matHeaderCellDef> Average distance (Metres)</mat-header-cell>

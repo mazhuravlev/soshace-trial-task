@@ -12,7 +12,7 @@ export class LogoutComponent implements OnInit {
   constructor(private apiService: ApiService, private router: Router) { }
 
   ngOnInit() {
-    this.apiService.logout().subscribe(() => this.router.navigateByUrl('/'));
+    this.apiService.logout().subscribe(() => this.router.navigateByUrl('/register'));
   }
 
 }

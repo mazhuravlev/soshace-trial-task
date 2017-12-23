@@ -10,14 +10,13 @@ export class AddRecordComponent implements OnInit {
   public record: RecordDto;
 
   constructor() {
+  }
+
+  ngOnInit() {
     this.record = {
       date: new Date(),
       duration: null,
       distance: null
     };
   }
-
-  ngOnInit() {
-  }
-
 }

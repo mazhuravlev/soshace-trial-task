@@ -18,6 +18,7 @@ import "rxjs/add/observable/concat";
 import "rxjs/add/operator/first";
 import {MatSnackBar} from "@angular/material";
 import {observable} from "rxjs/symbol/observable";
+import {LoginDto} from "../dto/login.dto";
 
 @Injectable()
 export class ApiService {
@@ -46,13 +47,13 @@ export class ApiService {
     return this.http.get(this.apiUrl + '/check').map(_ => true).catch(e => Observable.of(false)).first();
   }
 
-  public login(user: UserDto): Observable<any> {
+  public login(user: LoginDto): Observable<any> {
     return this.http.post(this.apiUrl + '/login', user)
       .do(_ => this.setIsLoggedIn(true))
       .catch(e => {
         if (e.status === 400) {
           this.snackBar.open(e.error, null, {
-            duration: 2000,
+            duration: 4000,
           });
           return Observable.never();
         }
@@ -103,7 +104,7 @@ export class ApiService {
   }
 
   public createAccount(user: UserDto) {
-    return this.http.post(this.apiUrl + 'register', user, {headers: this.headers})
+    return this.http.post(this.apiUrl + '/register', user, {headers: this.headers})
       .catch(e => this.handleError(e));
   }
 

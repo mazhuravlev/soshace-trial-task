@@ -19,12 +19,12 @@ export class EditRecordComponent implements OnInit, OnDestroy {
   constructor(private formBuilder: FormBuilder,
               private apiService: ApiService,
               private activatedRoute: ActivatedRoute) {
-    this.paramsSubscription = activatedRoute.paramMap
-      .flatMap(params => this.apiService.getRecord(params.get('id')))
-      .subscribe(record => this.record = record);
   }
 
   ngOnInit() {
+    this.paramsSubscription = this.activatedRoute.paramMap
+      .flatMap(params => this.apiService.getRecord(params.get('id')))
+      .subscribe(record => this.record = record);
   }
 
   ngOnDestroy() {

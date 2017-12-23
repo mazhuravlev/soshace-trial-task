@@ -18,13 +18,13 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private formBuilder: FormBuilder,
               private apiService: ApiService,
               private router: Router) {
-    this.loginForm = formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
-    });
   }
 
   ngOnInit() {
+    this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
     this.loginSubscription = this.apiService.isLoggedIn.subscribe(isLoggedIn => {
       this.isLoggedIn = isLoggedIn;
     });
@@ -35,6 +35,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public onLoginFormSubmit({valid, value}) {
-    this.apiService.login(value).subscribe();
+    this.apiService.login(value).subscribe(_ => this.router.navigateByUrl('/dashboard'));
   }
 }

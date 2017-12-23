@@ -2,7 +2,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppComponent} from './components/app/app.component';
 import {ApiService} from "./services/api.service";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ReactiveFormsModule} from "@angular/forms";
 import { RegisterComponent } from './components/register/register.component';
 import {MaterialModule} from "./modules/material.module";
@@ -20,6 +19,7 @@ import { RecordFormComponent } from './components/record-form/record-form.compon
 import { DurationPipe } from './pipes/duration.pipe';
 import {ConverterService} from "./services/converter.service";
 import {TextMaskModule} from "angular2-text-mask";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 
 @NgModule({

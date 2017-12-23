@@ -10,12 +10,10 @@ import {Router} from "@angular/router";
 export class IndexComponent implements OnInit {
 
   constructor(private apiService: ApiService, private router: Router) {
-    apiService.isLoggedIn.subscribe(isLoggedIn => {
-      this.router.navigateByUrl(isLoggedIn ? '/dashboard' : '/register');
-    });
   }
 
   ngOnInit() {
+    this.apiService.isLoggedIn.first()
+      .subscribe(isLoggedIn => this.router.navigateByUrl(isLoggedIn ? '/dashboard' : '/register'));
   }
-
 }

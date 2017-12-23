@@ -5,6 +5,7 @@ import {MatTableDataSource} from "@angular/material";
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import {ConverterService} from "../../services/converter.service";
+import {ReportRecord} from "./report-record";
 
 @Component({
   selector: 'app-reports',
@@ -25,9 +26,13 @@ export class ReportsComponent implements OnInit {
   }
 
   private makeReport(records: RecordDto[]): ReportRow[] {
-    return Object.entries(_.groupBy(records, record => moment(record.date).week()))
-      .map(row => this.makeReportRow(row))
-      .sort((a, b) => a.week - b.week);
+    return Object.entries(_.groupBy(records.map(record => this.makeReportRecord(record)),
+      record => record.week + '_' + record.year))
+      .map(row => this.makeReportRow(row[1]))
+      .sort((a, b) => {
+        if(a.year === b.year) return a.week - b.week;
+        return a.year - b.year;
+      });
   }
 
   private calcAverageSpeed(records: RecordDto[]): number {
@@ -39,17 +44,24 @@ export class ReportsComponent implements OnInit {
     return Math.round(_.mean(records.map(r => r.distance)));
   }
 
-  private makeReportRow([week, records]: [string, RecordDto[]]): ReportRow {
+  private makeReportRow(records: ReportRecord[]): ReportRow {
     return {
-      week: Number(week),
+      week: records[0].week,
+      year: records[0].year,
       averageSpeed: this.calcAverageSpeed(records),
       averageDistance: this.calcAverageDistance(records)
     };
+  }
+
+  private makeReportRecord(record: RecordDto): ReportRecord {
+    const mDate = moment(record.date);
+    return {...record, week: mDate.week(), year: mDate.year()};
   }
 }
 
 interface ReportRow {
   week: number;
+  year: number;
   averageSpeed: number;
   averageDistance: number;
 }
