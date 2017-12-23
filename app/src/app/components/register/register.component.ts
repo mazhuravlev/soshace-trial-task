@@ -13,9 +13,10 @@ import "rxjs/add/operator/mergeMap";
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit, OnDestroy {
-  private form: FormGroup;
+  public form: FormGroup;
+  public passwordMismatch: boolean;
+
   private formSubscription: Subscription;
-  private passwordMismatch: boolean;
 
   constructor(private formBuilder: FormBuilder,
               private apiService: ApiService,
