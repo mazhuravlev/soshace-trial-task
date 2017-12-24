@@ -1,0 +1,100 @@
+{
+  "createdAt": "2017-12-24T11:30:03.096Z",
+  "version": "11.0.31",
+  "kind": "ARC#AllDataExport",
+  "requests": [
+    {
+      "type": "saved",
+      "headers": "Content-Type: application/json\nCookie: ${authCookie}",
+      "method": "POST",
+      "name": "create record",
+      "payload": "{\"date\":\"2017-12-23T14:23:12.588Z\",\"distance\":2000,\"duration\":600000}",
+      "url": "http://localhost:3100/api/records",
+      "updated": 1514114809541,
+      "_referenceLegacyProject": "063615e4-6f8c-4dd2-82c7-32f72f04e2fb",
+      "kind": "ARC#RequestData"
+    },
+    {
+      "method": "DELETE",
+      "url": "http://localhost:3100/api/records/5a3e66d365bdd91404718c73",
+      "headers": "Cookie: ${authCookie}",
+      "name": "delete record",
+      "type": "saved",
+      "updated": 1514114888278,
+      "_referenceLegacyProject": "063615e4-6f8c-4dd2-82c7-32f72f04e2fb",
+      "kind": "ARC#RequestData"
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:3100/api/records/5a3e66d365bdd91404718c73",
+      "headers": "Cookie: ${authCookie}",
+      "name": "get record",
+      "type": "saved",
+      "updated": 1514114523439,
+      "_referenceLegacyProject": "063615e4-6f8c-4dd2-82c7-32f72f04e2fb",
+      "kind": "ARC#RequestData"
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:3100/api/records",
+      "headers": "cookie: koa:sess=eyJwYXNzcG9ydCI6eyJ1c2VyIjoiNWEzYmFkMGYwOGI4YWUzYmU4ZjE2YzM0In0sIl9leHBpcmUiOjE1MTQxMzY3MDEwMjcsIl9tYXhBZ2UiOjg2NDAwMDAwfQ==; path=/; httponly; koa:sess.sig=0RTnKZX_elWzIoNeUyLvLw-oei8; path=/; httponly",
+      "name": "get records",
+      "type": "saved",
+      "updated": 1514114210018,
+      "_referenceLegacyProject": "063615e4-6f8c-4dd2-82c7-32f72f04e2fb",
+      "kind": "ARC#RequestData"
+    },
+    {
+      "method": "POST",
+      "url": "http://localhost:3100/api/login",
+      "headers": "Content-Type: application/json",
+      "payload": "{\"username\":\"test\",\"password\":\"test\"}",
+      "name": "login",
+      "type": "saved",
+      "updated": 1514050068992,
+      "_referenceLegacyProject": "063615e4-6f8c-4dd2-82c7-32f72f04e2fb",
+      "kind": "ARC#RequestData"
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:3100/api/logout",
+      "headers": "Cookie: ${authCookie}",
+      "name": "logout",
+      "type": "saved",
+      "updated": 1514114661647,
+      "_referenceLegacyProject": "063615e4-6f8c-4dd2-82c7-32f72f04e2fb",
+      "kind": "ARC#RequestData"
+    },
+    {
+      "method": "PUT",
+      "url": "http://localhost:3100/api/records/5a3e66d665bdd91404718c74",
+      "headers": "Content-Type: application/json\nCookie: ${authCookie}",
+      "payload": "{\"date\":\"2017-12-23T14:23:12.588Z\",\"distance\":1000,\"duration\":300000}",
+      "name": "update record",
+      "type": "saved",
+      "updated": 1514114973044,
+      "_referenceLegacyProject": "063615e4-6f8c-4dd2-82c7-32f72f04e2fb",
+      "kind": "ARC#RequestData"
+    }
+  ],
+  "projects": [
+    {
+      "name": "jogging",
+      "order": 0,
+      "created": 1514050068974,
+      "updated": 1514050068974,
+      "_referenceId": "063615e4-6f8c-4dd2-82c7-32f72f04e2fb",
+      "kind": "ARC#ProjectData"
+    }
+  ],
+  "variables": [
+    {
+      "environment": "default",
+      "enabled": true,
+      "variable": "authCookie",
+      "value": "__COOKIE__",
+      "key": "6ba81069-508b-433c-bc33-b66e945f0f15",
+      "kind": "ARC#Variable"
+    }
+  ]
+}

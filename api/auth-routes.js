@@ -27,8 +27,8 @@ function makeRouter(routePrefix) {
         newRecord.userId = ctx.state.user._id;
         try {
             await newRecord.save();
-            ctx.status = 204;
-            ctx.body = successResponse();
+            ctx.status = 200;
+            ctx.body = newRecord;
         } catch (e) {
             ctx.throw(400, e);
         }

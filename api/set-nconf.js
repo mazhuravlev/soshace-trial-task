@@ -5,7 +5,8 @@ nconf.defaults({
     port: 3100,
     secret: 'secret',
     dbUrl: 'mongodb://localhost:27017/testapp',
-    routePrefix: '/api'
+    routePrefix: '/api',
+    debug: true
 });
 
 module.exports = nconf;
