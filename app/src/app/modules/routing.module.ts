@@ -45,10 +45,12 @@ const routes: Routes = [
   },
   {
     path: 'add-record',
+    canActivate: [LoggedInGuard],
     component: AddRecordComponent
   },
   {
     path: 'edit-record/:id',
+    canActivate: [LoggedInGuard],
     component: EditRecordComponent
   },
   {
