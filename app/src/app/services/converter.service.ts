@@ -11,7 +11,7 @@ export class ConverterService {
 
   // ms -> 00:00:00
   public durationToString(duration: number | null): string {
-    if (!duration) return '';
+    if (duration === null) return '';
     const mDuration = moment.duration(duration);
     return [mDuration.hours(), mDuration.minutes(), mDuration.seconds()]
       .map(x => x > 9 ? '' + x : '0' + x).join(':');

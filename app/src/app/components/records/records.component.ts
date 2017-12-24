@@ -59,11 +59,11 @@ export class RecordsComponent implements OnInit {
   public sortData(e) {
     if (e.direction === 'asc') {
       this.dataSource.data = this.records.slice().sort((a: RecordDto, b: RecordDto) => {
-        return new Date(a.date).getTime() - new Date(b.date).getTime();
+        return new Date(a.date as string).getTime() - new Date(b.date as string).getTime();
       });
     } else if (e.direction === 'desc') {
       this.dataSource.data = this.records.slice().sort((a: RecordDto, b: RecordDto) => {
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
+        return new Date(b.date as string).getTime() - new Date(a.date as string).getTime();
       });
     } else {
       this.dataSource.data = this.records;

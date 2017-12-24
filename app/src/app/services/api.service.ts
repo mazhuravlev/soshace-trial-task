@@ -63,7 +63,10 @@ export class ApiService {
 
   public logout(): Observable<any> {
     return this.http.get(this.apiUrl + '/logout')
-      .do(() => this.setIsLoggedIn(false))
+      .do(() => {
+        this.setIsLoggedIn(false);
+        this.cachedRecords = [];
+      })
       .catch(e => this.handleError(e));
   }
 

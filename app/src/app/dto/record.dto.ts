@@ -1,6 +1,6 @@
 export interface RecordDto {
   _id?: string;
-  date: Date;
+  date: Date | string;
   distance: number;
   // duration in ms
   duration: number
