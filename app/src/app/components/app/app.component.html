@@ -1,8 +1,8 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <span routerLink="/">Jogging app</span>
+    <span routerLink="/" class="app-title">Jogging App</span>
     <span class="example-spacer"></span>
-    <form *ngIf="!isLoggedIn" [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit(loginForm)">
+    <form *ngIf="!isLoggedIn" class="login-form" [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit(loginForm)">
     <mat-form-field floatLabel="never" [hideRequiredMarker]="true" style="margin-right: 12px;">
       <input formControlName="username" name="email" matInput placeholder="Email">
     </mat-form-field>

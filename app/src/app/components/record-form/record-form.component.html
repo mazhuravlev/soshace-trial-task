@@ -1,5 +1,5 @@
 <mat-card class="form-card">
-  <h3 class="title">{{record._id ? 'Edit record' : 'Add record'}}</h3>
+  <h3 class="title">{{record._id ? 'Edit Record' : 'Add Record'}}</h3>
   <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
     <mat-form-field>
       <input matInput [matDatepicker]="picker" formControlName="date" placeholder="Choose a date" required autocomplete="off">
